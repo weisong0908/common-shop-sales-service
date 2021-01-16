@@ -30,7 +30,18 @@ namespace CommonShop.SalesService
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CommonShop.SalesService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Common Shop - Sales Service", Version = "v1" });
+            });
+
+            services.AddCors(setupAction =>
+            {
+                setupAction.AddPolicy("webapi gateway", configurePolicy =>
+                {
+                    configurePolicy
+                        .WithOrigins(Configuration.GetSection("Security:AllowedOrigins").Get<string[]>())
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
         }
 
@@ -47,6 +58,8 @@ namespace CommonShop.SalesService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("webapi gateway");
 
             app.UseAuthorization();
 
