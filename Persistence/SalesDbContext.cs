@@ -8,6 +8,7 @@ namespace CommonShop.SalesService.Persistence
     public class SalesDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public SalesDbContext(DbContextOptions options) : base(options)
         {
@@ -21,9 +22,7 @@ namespace CommonShop.SalesService.Persistence
 
         private void SeedDatabase(ModelBuilder modelBuilder)
         {
-            var products = new List<Product>();
-
-            var guids = new List<Guid>()
+            var productIds = new List<Guid>()
             {
                 new Guid("de039434-d200-43b9-8191-79869c895821"),
                 new Guid("d6a76809-7088-465d-bfe8-4d95c4f38c40"),
@@ -37,21 +36,77 @@ namespace CommonShop.SalesService.Persistence
                 new Guid("48347309-5131-4cbc-aed7-9a64b40059c4"),
             };
 
+            var orderIds = new List<Guid>()
+            {
+                new Guid("e148921a-f292-4078-8004-120a392836ab"),
+                new Guid("e0c33624-316f-454e-9952-c4b88f6f4318"),
+                new Guid("cf8df904-dc82-4f7f-8cf8-84dd03fee8bd"),
+                new Guid("06706a27-4213-4d6c-a3c6-8789462b2f5c")
+            };
+
+            var products = CreateProducts(productIds, orderIds);
+
+            modelBuilder.Entity<Product>().HasData(products);
+
+            var orders = CreateOrders(orderIds, products);
+
+            modelBuilder.Entity<Order>().HasData(orders);
+
+
+        }
+
+        private IList<Product> CreateProducts(IList<Guid> productIds, IList<Guid> orderIds)
+        {
+            var products = new List<Product>();
+
             for (int i = 1; i <= 10; i++)
             {
                 products.Add(new Product()
                 {
-                    Id = guids[i - 1],
+                    Id = productIds[i - 1],
                     Title = "Product " + i,
                     Description = "Some description",
                     Price = i * 10,
                     Quantity = i % 3 + 1,
                     Category = i % 2 == 0 ? "Category 2" : "Category 1",
-                    ThumbnailUrl = "https://bulma.io/images/placeholders/640x480.png"
+                    ThumbnailUrl = "https://bulma.io/images/placeholders/640x480.png",
+                    OrderId = orderIds[i % 4]
                 });
             }
 
-            modelBuilder.Entity<Product>().HasData(products);
+            return products;
+        }
+
+        private IList<Order> CreateOrders(IList<Guid> orderIds, IList<Product> products)
+        {
+            var orders = new List<Order>();
+
+            var guids = new List<Guid>()
+            {
+                new Guid("e148921a-f292-4078-8004-120a392836ab"),
+                new Guid("e0c33624-316f-454e-9952-c4b88f6f4318"),
+                new Guid("cf8df904-dc82-4f7f-8cf8-84dd03fee8bd"),
+                new Guid("06706a27-4213-4d6c-a3c6-8789462b2f5c")
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                var order = new Order()
+                {
+                    Id = guids[i],
+                    Date = DateTime.Today.AddDays(-i),
+                    // Products = new List<Product>() { products[i], products[i + 1] },
+                    Customer = Guid.Empty,
+                    ShippingAddress = Guid.Empty,
+                    // Fees = new List<Guid>() { Guid.Empty },
+                    OrderStatus = OrderStatus.New
+                };
+                order.TotalPrice = products[i].Price * products[i].Quantity + products[i + 1].Price * products[i + 1].Quantity;
+
+                orders.Add(order);
+            }
+
+            return orders;
         }
     }
 }

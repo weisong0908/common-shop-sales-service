@@ -48,6 +48,7 @@ namespace CommonShop.SalesService
 
             services.AddDbContext<SalesDbContext>(optionsAction => optionsAction.UseNpgsql(Configuration.GetConnectionString("Default")));
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
