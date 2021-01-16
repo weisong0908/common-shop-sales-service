@@ -43,4 +43,4 @@ jobs:
           script: |
             docker stop sales-service
             docker pull weisong0908/common-shop-sales-service
-            docker run -d --rm -p 5010:80 --name sales-service -e ASPNETCORE_ENVIRONMENT=Staging weisong0908/common-shop-sales-service -e ${{DATABASE_CONNECTIONSTRING}}
+            docker run -d --rm -p 5010:80 --name sales-service -e ASPNETCORE_ENVIRONMENT=Staging weisong0908/common-shop-sales-service -e ${{ DATABASE_CONNECTIONSTRING }}
