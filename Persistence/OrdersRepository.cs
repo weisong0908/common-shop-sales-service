@@ -29,6 +29,7 @@ namespace CommonShop.SalesService.Persistence
                 .Include(o => o.Customer)
                 .ThenInclude(c => c.PrimaryAddress)
                 .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .Include(o => o.Fees)
                 .SingleOrDefaultAsync(o => o.Id == id);
 
