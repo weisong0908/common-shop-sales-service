@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommonShop.SalesService.Persistence
 {
-    public class ProductRepository : IProductRepository
+    public class ProductsRepository : IProductsRepository
     {
         private readonly SalesDbContext _dbContext;
-        public ProductRepository(SalesDbContext dbContext)
+        public ProductsRepository(SalesDbContext dbContext)
         {
             _dbContext = dbContext;
         }

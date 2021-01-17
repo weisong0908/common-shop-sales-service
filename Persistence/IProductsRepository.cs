@@ -5,9 +5,9 @@ using CommonShop.SalesService.Models;
 
 namespace CommonShop.SalesService.Persistence
 {
-    public interface IOrderRepository
+    public interface IProductsRepository
     {
-        Task<Order> GetOrder(Guid id);
-        Task<IEnumerable<Order>> GetOrders();
+        Task<Product> GetProduct(Guid id);
+        Task<IEnumerable<Product>> GetProducts();
     }
 }

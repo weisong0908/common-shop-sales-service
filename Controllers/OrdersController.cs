@@ -11,10 +11,10 @@ namespace Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrdersRepository _orderRepository;
         private readonly ILogger<OrdersController> _logger;
 
-        public OrdersController(IOrderRepository orderRepository, ILogger<OrdersController> logger)
+        public OrdersController(IOrdersRepository orderRepository, ILogger<OrdersController> logger)
         {
             _orderRepository = orderRepository;
             _logger = logger;

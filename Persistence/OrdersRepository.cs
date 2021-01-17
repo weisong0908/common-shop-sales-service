@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommonShop.SalesService.Persistence
 {
-    public class OrderRepository : IOrderRepository
+    public class OrdersRepository : IOrdersRepository
     {
         private readonly SalesDbContext _dbContext;
 
-        public OrderRepository(SalesDbContext dbContext)
+        public OrdersRepository(SalesDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -26,7 +26,10 @@ namespace CommonShop.SalesService.Persistence
         {
             var order = await _dbContext
                 .Orders
+                .Include(o => o.Customer)
+                .ThenInclude(c => c.PrimaryAddress)
                 .Include(o => o.OrderProducts)
+                .Include(o => o.Fees)
                 .SingleOrDefaultAsync(o => o.Id == id);
 
             return order;

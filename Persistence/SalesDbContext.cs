@@ -151,7 +151,6 @@ namespace CommonShop.SalesService.Persistence
                     Title = "Product " + i,
                     Description = "Some description",
                     Price = i * 10,
-                    Quantity = i % 3 + 1,
                     Category = i % 2 == 0 ? "Category 2" : "Category 1",
                     ThumbnailUrl = "https://bulma.io/images/placeholders/640x480.png",
                     StockLevel = i

@@ -11,10 +11,10 @@ namespace CommonShop.SalesService.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductsRepository _productRepository;
         private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(IProductRepository productRepository, ILogger<ProductsController> logger)
+        public ProductsController(IProductsRepository productRepository, ILogger<ProductsController> logger)
         {
             _productRepository = productRepository;
             _logger = logger;
