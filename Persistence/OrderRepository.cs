@@ -26,7 +26,7 @@ namespace CommonShop.SalesService.Persistence
         {
             var order = await _dbContext
                 .Orders
-                .Include(o => o.Products)
+                .Include(o => o.OrderProducts)
                 .SingleOrDefaultAsync(o => o.Id == id);
 
             return order;

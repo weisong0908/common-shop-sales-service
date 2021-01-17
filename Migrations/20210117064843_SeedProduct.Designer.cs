@@ -3,15 +3,17 @@ using System;
 using CommonShop.SalesService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CommonShop.SalesService.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    partial class SalesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210117064843_SeedProduct")]
+    partial class SeedProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,36 +151,6 @@ namespace CommonShop.SalesService.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Fees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("132898f9-ef64-474b-884c-d0b7801e9269"),
-                            Cost = 2m,
-                            OrderId = new Guid("e148921a-f292-4078-8004-120a392836ab"),
-                            Title = "Shipping fee"
-                        },
-                        new
-                        {
-                            Id = new Guid("48173c46-4ad1-4f94-8241-2c2aadd9cd49"),
-                            Cost = 2m,
-                            OrderId = new Guid("e0c33624-316f-454e-9952-c4b88f6f4318"),
-                            Title = "Shipping fee"
-                        },
-                        new
-                        {
-                            Id = new Guid("d7b7454d-0593-48de-aab2-d20a00b3db96"),
-                            Cost = 2m,
-                            OrderId = new Guid("cf8df904-dc82-4f7f-8cf8-84dd03fee8bd"),
-                            Title = "Shipping fee"
-                        },
-                        new
-                        {
-                            Id = new Guid("02238e28-1b03-48db-94b9-c0b335ae6d7a"),
-                            Cost = 2m,
-                            OrderId = new Guid("06706a27-4213-4d6c-a3c6-8789462b2f5c"),
-                            Title = "Shipping fee"
-                        });
                 });
 
             modelBuilder.Entity("CommonShop.SalesService.Models.Order", b =>
@@ -204,91 +176,6 @@ namespace CommonShop.SalesService.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e148921a-f292-4078-8004-120a392836ab"),
-                            CustomerId = new Guid("6865a7fa-6866-4516-9002-53cc8386991e"),
-                            Date = new DateTime(2021, 1, 17, 0, 0, 0, 0, DateTimeKind.Local),
-                            OrderStatus = 0,
-                            TotalPrice = 22m
-                        },
-                        new
-                        {
-                            Id = new Guid("e0c33624-316f-454e-9952-c4b88f6f4318"),
-                            CustomerId = new Guid("f5f1e765-a3bb-44bb-89b9-52ab8eab9db4"),
-                            Date = new DateTime(2021, 1, 16, 0, 0, 0, 0, DateTimeKind.Local),
-                            OrderStatus = 0,
-                            TotalPrice = 42m
-                        },
-                        new
-                        {
-                            Id = new Guid("cf8df904-dc82-4f7f-8cf8-84dd03fee8bd"),
-                            CustomerId = new Guid("3a538afc-1441-4c96-bf86-81a18ad0ca04"),
-                            Date = new DateTime(2021, 1, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            OrderStatus = 0,
-                            TotalPrice = 62m
-                        },
-                        new
-                        {
-                            Id = new Guid("06706a27-4213-4d6c-a3c6-8789462b2f5c"),
-                            CustomerId = new Guid("97bdd552-ae59-403a-ba6c-3162d17560ec"),
-                            Date = new DateTime(2021, 1, 14, 0, 0, 0, 0, DateTimeKind.Local),
-                            OrderStatus = 0,
-                            TotalPrice = 82m
-                        });
-                });
-
-            modelBuilder.Entity("CommonShop.SalesService.Models.OrderProduct", b =>
-                {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("OrderId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProduct");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = new Guid("e148921a-f292-4078-8004-120a392836ab"),
-                            ProductId = new Guid("de039434-d200-43b9-8191-79869c895821"),
-                            Amount = 20m,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            OrderId = new Guid("e0c33624-316f-454e-9952-c4b88f6f4318"),
-                            ProductId = new Guid("d6a76809-7088-465d-bfe8-4d95c4f38c40"),
-                            Amount = 40m,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            OrderId = new Guid("cf8df904-dc82-4f7f-8cf8-84dd03fee8bd"),
-                            ProductId = new Guid("387ba502-67ff-4cc5-ab50-15d436a4b455"),
-                            Amount = 60m,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            OrderId = new Guid("06706a27-4213-4d6c-a3c6-8789462b2f5c"),
-                            ProductId = new Guid("a14ac91b-1ad1-40c4-8092-d08109e5ca78"),
-                            Amount = 80m,
-                            Quantity = 2
-                        });
                 });
 
             modelBuilder.Entity("CommonShop.SalesService.Models.Product", b =>
@@ -435,6 +322,21 @@ namespace CommonShop.SalesService.Migrations
                         });
                 });
 
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("OrdersId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("OrderProduct");
+                });
+
             modelBuilder.Entity("CommonShop.SalesService.Models.Address", b =>
                 {
                     b.HasOne("CommonShop.SalesService.Models.Customer", "Customer")
@@ -468,23 +370,19 @@ namespace CommonShop.SalesService.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("CommonShop.SalesService.Models.OrderProduct", b =>
+            modelBuilder.Entity("OrderProduct", b =>
                 {
-                    b.HasOne("CommonShop.SalesService.Models.Order", "Order")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("CommonShop.SalesService.Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CommonShop.SalesService.Models.Product", "Product")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("CommonShop.SalesService.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CommonShop.SalesService.Models.Customer", b =>
@@ -497,13 +395,6 @@ namespace CommonShop.SalesService.Migrations
             modelBuilder.Entity("CommonShop.SalesService.Models.Order", b =>
                 {
                     b.Navigation("Fees");
-
-                    b.Navigation("OrderProducts");
-                });
-
-            modelBuilder.Entity("CommonShop.SalesService.Models.Product", b =>
-                {
-                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CommonShop.SalesService.Models
 {
@@ -7,10 +8,10 @@ namespace CommonShop.SalesService.Models
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
-        public IEnumerable<Product> Products { get; set; }
-        public Guid Customer { get; set; }
-        public Guid ShippingAddress { get; set; }
-        // public IEnumerable<Guid> Fees { get; set; }
+        public IList<OrderProduct> OrderProducts { get; set; }
+        public Customer Customer { get; set; }
+        public Guid CustomerId { get; set; }
+        public IList<Fee> Fees { get; set; }
         public decimal TotalPrice { get; set; }
         public OrderStatus OrderStatus { get; set; }
     }

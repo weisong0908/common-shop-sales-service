@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CommonShop.SalesService.Models
@@ -13,8 +14,7 @@ namespace CommonShop.SalesService.Models
         public string Category { get; set; }
         public string ThumbnailUrl { get; set; }
         public int StockLevel { get; set; }
-        public Guid OrderId { get; set; }
-        [JsonIgnore]
-        public Order Order { get; set; }
+        public IList<OrderProduct> OrderProducts { get; set; }
+
     }
 }
