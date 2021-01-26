@@ -31,5 +31,20 @@ namespace CommonShop.SalesService.Persistence
 
             return product;
         }
+
+        public void CreateProduct(Product product)
+        {
+            _dbContext.Add(product);
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            _dbContext.Entry(product).State = EntityState.Modified;
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _dbContext.Remove(product);
+        }
     }
 }

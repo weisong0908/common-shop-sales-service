@@ -9,5 +9,8 @@ namespace CommonShop.SalesService.Persistence
     {
         Task<Product> GetProduct(Guid id);
         Task<IEnumerable<Product>> GetProducts();
+        void CreateProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(Product product);
     }
 }
