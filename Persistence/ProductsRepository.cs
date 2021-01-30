@@ -18,6 +18,7 @@ namespace CommonShop.SalesService.Persistence
         {
             var products = await _dbContext
                 .Products
+                .Include(p => p.ProductCategory)
                 .ToListAsync();
 
             return products;
@@ -27,6 +28,7 @@ namespace CommonShop.SalesService.Persistence
         {
             var product = await _dbContext
                 .Products
+                .Include(p => p.ProductCategory)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
             return product;
@@ -45,6 +47,15 @@ namespace CommonShop.SalesService.Persistence
         public void DeleteProduct(Product product)
         {
             _dbContext.Remove(product);
+        }
+
+        public async Task<IEnumerable<ProductCategory>> GetProductCategories()
+        {
+            var productCategories = await _dbContext
+                .ProductCategories
+                .ToListAsync();
+
+            return productCategories;
         }
     }
 }

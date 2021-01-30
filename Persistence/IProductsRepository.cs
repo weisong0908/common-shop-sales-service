@@ -12,5 +12,6 @@ namespace CommonShop.SalesService.Persistence
         void CreateProduct(Product product);
         void UpdateProduct(Product product);
         void DeleteProduct(Product product);
+        Task<IEnumerable<ProductCategory>> GetProductCategories();
     }
 }

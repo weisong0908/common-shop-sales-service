@@ -8,6 +8,7 @@ namespace CommonShop.SalesService.Persistence
     public class SalesDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -53,6 +54,13 @@ namespace CommonShop.SalesService.Persistence
                 new Guid("c9871377-210e-4979-a006-a8e156b05147")
             };
 
+            var productCategoryIds = new List<Guid>()
+            {
+                new Guid("6280198e-df28-4fa7-a095-3671f51501c7"),
+                new Guid("b1d36dfd-4c8a-48d1-8f61-af926ddfdf41"),
+                new Guid("10fc51a4-1f9d-4296-ae45-4b797d466fae")
+            };
+
             var productIds = new List<Guid>()
             {
                 new Guid("de039434-d200-43b9-8191-79869c895821"),
@@ -64,7 +72,7 @@ namespace CommonShop.SalesService.Persistence
                 new Guid("3c72192c-578f-4e37-9061-029f70f94b8b"),
                 new Guid("5114e1c1-0ad1-44bc-88cb-cbe70ee07c3e"),
                 new Guid("b6890fea-68a6-4188-aec2-9e99c71f0c9a"),
-                new Guid("48347309-5131-4cbc-aed7-9a64b40059c4"),
+                new Guid("48347309-5131-4cbc-aed7-9a64b40059c4")
             };
 
             var orderIds = new List<Guid>()
@@ -85,13 +93,15 @@ namespace CommonShop.SalesService.Persistence
 
             var customers = SeedCustomers(customerIds);
             var addresses = SeedAddresses(addressIds, customerIds);
-            var products = SeedProducts(productIds, orderIds);
+            var productCategories = SeedProductCategories(productCategoryIds);
+            var products = SeedProducts(productIds, productCategoryIds);
             var fees = SeedFees(feeIds, orderIds);
             var orders = SeedOrders(orderIds, customerIds, products);
             var orderProducts = SeedOrderProducts(orderIds, productIds, products);
 
             modelBuilder.Entity<Customer>().HasData(customers);
             modelBuilder.Entity<Address>().HasData(addresses);
+            modelBuilder.Entity<ProductCategory>().HasData(productCategories);
             modelBuilder.Entity<Product>().HasData(products);
             modelBuilder.Entity<Fee>().HasData(fees);
             modelBuilder.Entity<Order>().HasData(orders);
@@ -139,7 +149,25 @@ namespace CommonShop.SalesService.Persistence
             return addresses;
         }
 
-        private IList<Product> SeedProducts(IList<Guid> productIds, IList<Guid> orderIds)
+        private IList<ProductCategory> SeedProductCategories(IList<Guid> productCategoryIds)
+        {
+            var productCategories = new List<ProductCategory>();
+
+            for (int i = 0; i < productCategoryIds.Count; i++)
+            {
+                var productCategory = new ProductCategory()
+                {
+                    Id = productCategoryIds[i],
+                    Title = $"Category {i + 1}"
+                };
+
+                productCategories.Add(productCategory);
+            }
+
+            return productCategories;
+        }
+
+        private IList<Product> SeedProducts(IList<Guid> productIds, IList<Guid> productCategoryIds)
         {
             var products = new List<Product>();
 
@@ -151,7 +179,7 @@ namespace CommonShop.SalesService.Persistence
                     Title = "Product " + i,
                     Description = "Some description",
                     Price = i * 10,
-                    Category = i % 2 == 0 ? "Category 2" : "Category 1",
+                    ProductCategoryId = i % 2 == 0 ? productCategoryIds[1] : productCategoryIds[0],
                     ThumbnailUrl = "https://bulma.io/images/placeholders/640x480.png",
                     StockLevel = i
                 });

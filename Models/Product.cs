@@ -10,7 +10,8 @@ namespace CommonShop.SalesService.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string Category { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+        public Guid ProductCategoryId { get; set; }
         public string ThumbnailUrl { get; set; }
         public int StockLevel { get; set; }
         [JsonIgnore]
