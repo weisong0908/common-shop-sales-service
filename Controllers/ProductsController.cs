@@ -54,8 +54,21 @@ namespace CommonShop.SalesService.Controllers
 
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct(ProductModification productModification)
         {
+            var product = new Product();
+            product.Title = productModification.Title;
+            product.Description = productModification.Description;
+            product.Price = productModification.Price;
+            product.StockLevel = productModification.StockLevel;
+            product.ThumbnailUrl = productModification.ThumbnailUrl;
+
+            var category = (await _productRepository.GetProductCategories()).SingleOrDefault(pc => pc.Title == productModification.Category);
+            if (category == null)
+                return NotFound();
+
+            product.ProductCategory = category;
+
             _productRepository.CreateProduct(product);
 
             await _unitOfWork.SaveChanges();
@@ -82,9 +95,8 @@ namespace CommonShop.SalesService.Controllers
             product.ThumbnailUrl = productModification.ThumbnailUrl;
 
             var category = (await _productRepository.GetProductCategories()).SingleOrDefault(pc => pc.Title == productModification.Category);
-
             if (category == null)
-                return NotFound();
+                return NotFound("Category not found");
 
             product.ProductCategory = category;
 
