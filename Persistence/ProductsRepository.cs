@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonShop.SalesService.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +15,34 @@ namespace CommonShop.SalesService.Persistence
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<int> GetTotalProductCount(string category = "")
         {
-            var products = await _dbContext
+            var products = _dbContext
+                .Products;
+
+            if (string.IsNullOrWhiteSpace(category))
+                return await products.CountAsync();
+
+            return await products
+                .Where(p => p.ProductCategory.Title.ToLower() == category.ToLower())
+                .CountAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetProducts(int take, int skip = 0, string category = "")
+        {
+            var products = _dbContext
                 .Products
                 .Include(p => p.ProductCategory)
-                .ToListAsync();
+                .OrderBy(p => p.Title)
+                .Skip(skip)
+                .Take(take);
 
-            return products;
+            if (string.IsNullOrWhiteSpace(category))
+                return await products.ToListAsync();
+
+            return await products
+                .Where(p => p.ProductCategory.Title.ToLower() == category.ToLower())
+                .ToListAsync();
         }
 
         public async Task<Product> GetProduct(Guid id)

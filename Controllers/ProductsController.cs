@@ -26,10 +26,18 @@ namespace CommonShop.SalesService.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        [HttpGet("count")]
+        public async Task<IActionResult> GetTotalProductCount([FromQuery] string category)
         {
-            var products = await _productRepository.GetProducts();
+            var totalProductCount = await _productRepository.GetTotalProductCount(category);
+
+            return Ok(totalProductCount);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProducts([FromQuery] int take, [FromQuery] int skip, [FromQuery] string category)
+        {
+            var products = await _productRepository.GetProducts(take, skip, category);
 
             _logger.LogInformation($"{products.Count()} product(s) found");
 
