@@ -33,16 +33,19 @@ namespace CommonShop.SalesService.Persistence
             var products = _dbContext
                 .Products
                 .Include(p => p.ProductCategory)
-                .OrderBy(p => p.Title)
-                .Skip(skip)
-                .Take(take);
+                .OrderBy(p => p.Title);
 
             if (string.IsNullOrWhiteSpace(category))
-                return await products.ToListAsync();
+                return await products
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
 
             return await products
                 .Where(p => p.ProductCategory.Title.ToLower() == category.ToLower())
-                .ToListAsync();
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
         }
 
         public async Task<Product> GetProduct(Guid id)
