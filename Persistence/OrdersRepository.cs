@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonShop.SalesService.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,22 @@ namespace CommonShop.SalesService.Persistence
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Order>> GetOrders()
+        public async Task<int> GetTotalOrderCount()
         {
-            var orders = await _dbContext.Orders.ToListAsync();
+            var orders = _dbContext
+                .Orders;
 
-            return orders;
+            return await orders.CountAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetOrders(int take, int skip = 0)
+        {
+            var orders = _dbContext.Orders;
+
+            return await orders
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
         }
 
         public async Task<Order> GetOrder(Guid id)

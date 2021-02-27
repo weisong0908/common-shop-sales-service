@@ -20,10 +20,18 @@ namespace Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        [HttpGet("count")]
+        public async Task<IActionResult> GetTotalProductCount([FromQuery] string category)
         {
-            var orders = await _orderRepository.GetOrders();
+            var totalOrderCount = await _orderRepository.GetTotalOrderCount();
+
+            return Ok(totalOrderCount);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrders([FromQuery] int take, [FromQuery] int skip)
+        {
+            var orders = await _orderRepository.GetOrders(take, skip);
 
             _logger.LogInformation($"{orders.Count()} order(s) found");
 
